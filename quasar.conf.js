@@ -57,9 +57,18 @@ module.exports = function (ctx) {
         'QCardMain',
         'QCardActions',
         'QCardTitle',
+        'QBreadcrumbs',
+        'QBreadcrumbsEl',
+        'QScrollArea',
+        'QTooltip',
+        'QTable',
+        'QTr',
+        'QTd',
+        'QPageSticky',
+        'QBtnToggle'
       ],
       directives: [
-        'Ripple'
+        'Ripple', 'Scroll'
       ],
       // Quasar plugins
       plugins: [

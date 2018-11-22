@@ -33,13 +33,13 @@
         inset-delimiter
       >
         <q-list-header>Dashboard</q-list-header>
-        <q-item @click.native="openURL('http://quasar-framework.org')">
-          <q-item-side icon="school" />
-          <q-item-main label="Docs" sublabel="quasar-framework.org" />
+        <q-item to="/" >
+          <q-item-side icon="home" />
+          <q-item-main label="Home" sublabel="Home Page" />
         </q-item>
-        <q-item >
-          <q-item-side icon="school" />
-          <q-item-main label="Post" sublabel="Blog Posting" />
+        <q-item to="/blog">
+          <q-item-side  />
+          <q-item-main label="Post" sublabel="Blog" />
         </q-item>
 
 
@@ -72,6 +72,12 @@ export default {
     logout () {
       console.log('logout')
       localStorage.clear()
+      this.$router.push('/auth')
+    }
+  },
+  created () {
+    let token = localStorage.getItem('token')
+    if (!token) {
       this.$router.push('/auth')
     }
   }

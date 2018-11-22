@@ -20,7 +20,7 @@
         </q-field>
       </q-card-main>
       <q-card-actions>
-        <q-btn @click="login" flat label="Login" style="margin-left:50vh" />
+        <q-btn @click="register" flat label="Register" style="margin-left:50vh" />
       </q-card-actions>
     </q-card>
   </div>
@@ -31,6 +31,7 @@
   // import {mapState} from 'vuex'
   // import swal from 'sweetalert'
   // import {api} from '../config'
+  import {DB} from '../config'
   export default {
     data () {
       return {
@@ -44,34 +45,25 @@
       // ])
     },
     methods: {
-      login () {
+      register () {
         console.log('login')
-        console.log(this.loginStatus, ' login status')
-        // axios.post(api+'admins/login',{
-        //   username : this.username,
-        //   password: this.password
-        // })
-        //   .then(({data})=> {
-        //     if(data.usernameFound) {
-        //       console.log(data)
-        //       swal(`Selamat Datang ${data.usernameFound[0].username}`)
-        //       this.$store.commit('setLoginStatus', true)
-        //       this.$router.push('/')
-        //       localStorage.setItem('token', data.token)
-        //     }
-        //     else {
-        //       console.log('Username/Password Salah')
-        //       swal('Username/Password Salah')
-        //     }
-        //   })
-        //   .catch(err=> {
-        //     console.log(err)
-        //   })
+        console.log(' login status')
+        DB.collection("admin")
+          .add({
+            username: this.username,
+            password: this.password
+          })
+          .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+          })
+          .catch(function(error) {
+            console.error("Error adding document: ", error);
+          });
       }
     },
     created () {
       let token = localStorage.getItem('token')
-      if (token ) {
+      if (token) {
         this.$router.push('/')
       }
     }

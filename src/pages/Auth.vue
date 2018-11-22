@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  // import axios from 'axios'
+  import axios from 'axios'
   // import {mapState} from 'vuex'
   // import swal from 'sweetalert'
   // import {api} from '../config'
@@ -45,33 +45,25 @@
     },
     methods: {
       login () {
-        this.$router.push('/')
-
-        // axios.post(api+'admins/login',{
-        //   username : this.username,
-        //   password: this.password
-        // })
-        //   .then(({data})=> {
-        //     if(data.usernameFound) {
-        //       console.log(data)
-        //       swal(`Selamat Datang ${data.usernameFound[0].username}`)
-        //       this.$store.commit('setLoginStatus', true)
-        //       this.$router.push('/')
-        //       localStorage.setItem('token', data.token)
-        //     }
-        //     else {
-        //       console.log('Username/Password Salah')
-        //       swal('Username/Password Salah')
-        //     }
-        //   })
-        //   .catch(err=> {
-        //     console.log(err)
-        //   })
+        // this.$router.push('/')
+        let url = 'https://us-central1-pintu-landing-pages.cloudfunctions.net/login'
+        axios.post(url,{
+          username: this.username,
+          password: this.password
+        })
+          .then(({data})=> {
+            console.log(data)
+            localStorage.setItem('token', data.token)
+            this.$router.push("/")
+          })
+          .catch(err=> {
+            console.log(err)
+          })
       }
     },
     created () {
       let token = localStorage.getItem('token')
-      if (token ) {
+      if (token) {
         this.$router.push('/')
       }
     }
