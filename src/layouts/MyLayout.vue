@@ -41,6 +41,10 @@
           <q-item-side  />
           <q-item-main label="Post" sublabel="Blog" />
         </q-item>
+        <q-item to="/subscriber">
+          <q-item-side icon="people"  />
+          <q-item-main label="Subscriber" sublabel="List Subscriber" />
+        </q-item>
 
 
         <q-list-header>Account</q-list-header>

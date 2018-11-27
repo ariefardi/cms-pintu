@@ -10,6 +10,9 @@
         Add New Blog Post
       </q-card-title>
       <q-card-separator />
+      <q-card-actions>
+        <Dialog :customDialog="customDialog" />
+      </q-card-actions>
       <q-card-main>
 
         <q-field
@@ -32,7 +35,7 @@
           <textarea name="editor_indo" id="content_indo" cols="30" rows="10"></textarea>
         </q-field>
 
-        <q-field>
+        <q-field v-if="!imageTop">
           <input @change="onchangeUpload" type="file">
           <q-btn @click="uploadImage" :loading="loading"
                  :percentage="percentage" size="lg" color="red" flat round icon="cloud_upload" >
@@ -43,7 +46,7 @@
           <div style="width: 500px; max-width: 90vw;" >
             <q-scroll-area style="width: 400px; max-width: 85vw; height: 300px; max-height: 70vh;" class="bg-grey-3 round-borders shadow-2">
               <div style="margin-bottom: 25px; padding: 15px;" v-for="(image, index) in images" :key="index">
-                <img class="image-upload" :src="image.url" alt="">
+                <img @click="imageButton" class="image-upload" :src="image.url" alt="">
                   <q-btn @click="deleteImage(image, index)"> Delete </q-btn>
               </div>
             </q-scroll-area>
@@ -59,14 +62,30 @@
         <q-btn @click="addBlog"  flat label="Add New Post" />
       </q-card-actions>
     </q-card>
-
   </q-page>
 </template>
 
 <script>
   import {storage, token, swal, link_storage} from '../config'
-  import {mapActions} from 'vuex'
+  import Dialog from '../components/Dialog'
+  import {mapActions, mapState} from 'vuex'
   export default {
+    components: {
+      Dialog
+    },
+    computed: {
+      ...mapState([
+        'customDialogModel'
+      ]),
+      customDialog: {
+        get () {
+          return this.$store.state.customDialogModel
+        },
+        set (value) {
+          this.$store.commit('setCustomDialog', value)
+        }
+      }
+    },
     mounted () {
 
       var config = {};
@@ -77,6 +96,7 @@
 
     data () {
       return {
+        // customDialogModel: false,
         checkArray: [],
         albumTitle: "",
         title_english : '',
@@ -87,13 +107,21 @@
         images: [],
         loading: false,
         percentage: 0,
+        imageTop : "",
+        imageName: ""
 
       }
     },
     methods: {
+      imageButton (src) {
+        console.log('image button')
+      },
       ...mapActions([
         'addingBlogs'
       ]),
+      changeModal (){
+        this.$store.commit('setCustomDialog', true)
+      },
       addBlog () {
         this.content_english = CKEDITOR.instances.content_english.getData()
         this.content_indo = CKEDITOR.instances.content_indo.getData()
@@ -105,7 +133,9 @@
           content_english: this.content_english,
           content_indo: this.content_indo,
           images,
-          token
+          token,
+          imageTop: this.imageTop,
+          imageName: this.imageName
         }
         this.addingBlogs(obj)
       },
@@ -131,6 +161,8 @@
               storage.ref('blogs_assets/'+`${this.title_english}/`+this.image.name).getDownloadURL()
                 .then((url)=> {
                   localStorage.setItem('albumTitle', this.title_english)
+                  this.imageTop = url
+                  this.imageName = this.image.name
                   let obj = {
                     url,
                     name: this.image.name

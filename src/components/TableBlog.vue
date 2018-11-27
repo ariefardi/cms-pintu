@@ -35,15 +35,12 @@
       </q-td>
       <q-td key="published"  :props="props" >
         <div class="row items-center justify-between no-wrap">
-          <q-btn-toggle
-            @input="buttonTrigger(props.row)"
-            v-model="props.row.published"
-            toggle-color="primary"
-            :options="[
-              {label: 'True', value: true},
-              {label: 'False', value: false}
-            ]"
-          />
+          <q-toggle @input="buttonTrigger(props.row)" v-model="props.row.published" checked-icon />
+        </div>
+      </q-td>
+      <q-td key="edit"  :props="props" >
+        <div class="row items-center justify-between no-wrap">
+          <q-btn @click="toEdit(props.row)" flat round color="primary"  > <q-icon name="edit" /> </q-btn>
         </div>
       </q-td>
     </q-tr>
@@ -57,6 +54,7 @@
   export default {
     data () {
       return {
+        checked: [],
         posts: [{data: "dawdawdaw"}],
         pagination: {
           sortBy: null, // String, column "name" property value
@@ -77,6 +75,8 @@
             align: 'left', sortable: true },
           { name: 'published', label: 'Published', field: 'published',
             align: 'left', sortable: true },
+          { name: 'edit', label: 'Edit', field: 'edit',
+            align: 'left', sortable: true },
         ],
         model: ''
       }
@@ -91,9 +91,11 @@
         'deletingBlogs'
       ]),
       buttonTrigger(row) {
-        console.log(row)
         this.deletingBlogs(row)
 
+      },
+      toEdit(row) {
+        this.$router.push('blog-edit/'+row.id)
       }
     },
     mounted () {
