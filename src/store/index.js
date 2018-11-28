@@ -4,7 +4,7 @@ import axios from 'axios'
 import swal from 'sweetalert'
 import router from '../router/index'
 import {DB, token} from "../config";
-
+import { Notify } from 'quasar'
 
 Vue.use(Vuex)
 
@@ -27,6 +27,9 @@ export default new Vuex.Store({
     },
     setCustomDialog(state, payload) {
       state.customDialogModel = payload
+    },
+    deletePerm(state, payload) {
+      state.blogs.splice(payload, 1)
     }
   },
   actions: {
@@ -58,6 +61,7 @@ export default new Vuex.Store({
     },
 
     addingBlogs({commit}, payload) {
+      let self = this
       DB.collection('blogs')
         .add({
         author: `/admin/${token}`,
@@ -74,6 +78,7 @@ export default new Vuex.Store({
         .then(function(docRef) {
           console.log("Document written with ID: ", docRef.id);
           swal("Berhasil menambahkan postingan")
+          self.dispatch('fetchingBlogs')
           router.push('/blog')
         })
         .catch(function(error) {
@@ -95,8 +100,35 @@ export default new Vuex.Store({
           console.error("Error writing document: ", error);
         });
     },
-    updatingBlogs({commit}, payload) {
+    deletingPermanent({commit}, payload) {
+      console.log(payload)
+      swal({
+        title: "Are you sure?",
+        text: "Once delete, your file will permanently gone from universe!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+        .then((willDelete)=> {
+          if(willDelete) {
+            DB.collection('blogs').doc(payload.id).delete()
+              .then(()=> {
+                Notify.create({
+                  message: 'Your file is gone from our universe!',
+                  timeout: 3000, // in milliseconds; 0 means no timeout
 
+                  // "type" adds a color and icon,
+                  // so you don't need to specify them.
+                  // Available values: 'positive', 'negative', 'warning', 'info'
+                  type: 'negative',
+
+                  color: 'negative',
+                  position: 'top-right', // 'top', 'left', 'bottom-left' etc
+                })
+                commit('deletePerm', payload.__index)
+              })
+          }
+        })
     }
   }
 })

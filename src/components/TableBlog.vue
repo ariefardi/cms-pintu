@@ -41,6 +41,7 @@
       <q-td key="edit"  :props="props" >
         <div class="row items-center justify-between no-wrap">
           <q-btn @click="toEdit(props.row)" flat round color="primary"  > <q-icon name="edit" /> </q-btn>
+          <q-btn @click="deleteRow(props.row)" flat round color="red"  > <q-icon name="delete" /> </q-btn>
         </div>
       </q-td>
     </q-tr>
@@ -88,7 +89,7 @@
     },
     methods: {
       ...mapActions([
-        'deletingBlogs'
+        'deletingBlogs', 'deletingPermanent'
       ]),
       buttonTrigger(row) {
         this.deletingBlogs(row)
@@ -96,6 +97,10 @@
       },
       toEdit(row) {
         this.$router.push('blog-edit/'+row.id)
+      },
+      deleteRow(row) {
+        console.log(row)
+        this.deletingPermanent(row)
       }
     },
     mounted () {
