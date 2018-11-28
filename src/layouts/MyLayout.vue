@@ -37,6 +37,10 @@
           <q-item-side icon="home" />
           <q-item-main label="Home" sublabel="Home Page" />
         </q-item>
+        <q-item>
+          <q-item-side icon="people" />
+          <q-item-main label="Admin (Soon)" sublabel="List Admin" />
+        </q-item>
         <q-item to="/blog">
           <q-item-side icon="dvr"  />
           <q-item-main label="Post" sublabel="Blog" />

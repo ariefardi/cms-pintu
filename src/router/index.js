@@ -18,6 +18,9 @@ export default new Router({
         { path: '/blog-add', component: () => import('pages/PostAdd.vue') },
         { path: '/blog-edit/:id', component: () => import('pages/PostEdit.vue') },
         { path: '/subscriber', component: () => import('pages/Subscriber.vue') },
+        { path: '/admin', component: () => import('pages/Admin.vue') },
+        { path: '/admin-add', component: () => import('pages/AdminAdd.vue') },
+        { path: '/admin-edit/:id', component: () => import('pages/AdminEdit.vue') }
       ]
     },
     {

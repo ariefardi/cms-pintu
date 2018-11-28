@@ -19,8 +19,8 @@
           <q-input type="password" v-model="password" float-label="Password" />
         </q-field>
       </q-card-main>
-      <q-card-actions>
-        <q-btn @click="login" flat label="Login" style="margin-left:50vh" />
+      <q-card-actions align='end'>
+        <q-btn @click="login" flat label="Login"  />
       </q-card-actions>
     </q-card>
   </div>

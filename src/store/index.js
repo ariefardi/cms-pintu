@@ -16,7 +16,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     blogs: [],
-    customDialogModel: false
+    customDialogModel: false,
+    admins: []
   },
   mutations: {
     setBlogs(state, payload) {
@@ -30,9 +31,94 @@ export default new Vuex.Store({
     },
     deletePerm(state, payload) {
       state.blogs.splice(payload, 1)
-    }
+    },
+
+
+
+
+
+    setAdmins(state, payload) {
+      state.admins = payload
+    },
+    setDeleteAdmin(state, payload) {
+      state.admins.splice(payload, 1)
+    },
+
   },
   actions: {
+    fetchingAdmins ({commit}) {
+      let self = this
+      DB.collection("admin")
+        .get()
+        .then((querySnap)=> {
+          let temp = []
+          querySnap.forEach(function (doc) {
+            let obj = doc.data()
+            obj.id = doc.id
+            temp.push(obj)
+          })
+          console.log('ini fetching', temp)
+          commit('setAdmins', temp)
+        })
+        .catch(err=> {
+          console.log('err')
+        })
+    },
+    deleteAdmin ({commit}, payload) {
+      swal({
+        title: "Are you sure?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+        .then((willDelete)=> {
+          if (willDelete) {
+            DB.collection('admin').doc(payload.id)
+              .delete()
+              .then(()=> {
+                Notify.create({
+                  message: 'Your admin user is gone from our universe!',
+                  timeout: 3000, // in milliseconds; 0 means no timeout
+
+                  // "type" adds a color and icon,
+                  // so you don't need to specify them.
+                  // Available values: 'positive', 'negative', 'warning', 'info'
+                  type: 'negative',
+
+                  color: 'negative',
+                  position: 'top-right', // 'top', 'left', 'bottom-left' etc
+                })
+                commit('setDeleteAdmin', payload.__index)
+              })
+              .catch(err=> {
+                Notify.create({
+                  message: 'Fail to delete user admin!!',
+                  timeout: 3000, // in milliseconds; 0 means no timeout
+
+                  // "type" adds a color and icon,
+                  // so you don't need to specify them.
+                  // Available values: 'positive', 'negative', 'warning', 'info'
+                  type: 'negative',
+
+                  color: 'negative',
+                  position: 'top-right', // 'top', 'left', 'bottom-left' etc
+                })
+              })
+          }
+        })
+    },
+
+
+
+
+
+
+
+
+
+
+
+
     fetchingBlogs({commit}) {
       let self = this
       DB.collection("blogs")
@@ -46,7 +132,6 @@ export default new Vuex.Store({
               let tempAuthor = obj.author.split('/')
               tempAuthor = tempAuthor[2]
               console.log(tempAuthor)
-            console.log("before temp", temp)
               DB.collection('admin').doc(tempAuthor).get()
                 .then((authorRef)=> {
                   obj.author = authorRef.data().username
@@ -76,10 +161,10 @@ export default new Vuex.Store({
         published: false,
       })
         .then(function(docRef) {
-          console.log("Document written with ID: ", docRef.id);
           swal("Berhasil menambahkan postingan")
-          self.dispatch('fetchingBlogs')
-          router.push('/blog')
+            .then(()=> {
+              router.push('/blog')
+            })
         })
         .catch(function(error) {
           console.error("Error adding document: ", error);
@@ -93,7 +178,6 @@ export default new Vuex.Store({
           published: payload.published
         })
         .then(function() {
-          console.log("Document successfully written!");
           commit('deleteBlogs', payload)
         })
         .catch(function(error) {
@@ -101,7 +185,6 @@ export default new Vuex.Store({
         });
     },
     deletingPermanent({commit}, payload) {
-      console.log(payload)
       swal({
         title: "Are you sure?",
         text: "Once delete, your file will permanently gone from universe!",

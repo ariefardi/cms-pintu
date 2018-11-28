@@ -12,17 +12,19 @@
       title="Subscribers"
       :pagination.sync="pagination"
     >
+      <template slot="top-right" slot-scope="props">
+        <q-btn flat color="primary" > Blast Email </q-btn>
+      </template>
+
       <q-tr slot="body" slot-scope="props" :props="props">
         <q-td key="email" :props="props" >
           <div class="row items-center justify-between no-wrap">
             <div> {{props.row.email}} </div>
           </div>
         </q-td>
-        <q-td key="action" :props="props" >
+        <q-td key="date" :props="props" >
           <div class="row items-center justify-between no-wrap">
-            <q-btn>
-              Blast Email
-            </q-btn>
+            <div> {{props.row.subscribe_date | getDate}} </div>
           </div>
         </q-td>
       </q-tr>
@@ -33,7 +35,7 @@
 
 <script>
   import {DB} from "../config";
-
+  import moment from 'moment'
   export default {
     mounted () {
      this.getSubs()
@@ -50,7 +52,7 @@
         columns: [
           { name: 'email', label: 'Email', field: 'email',
             align: 'left', sortable: true },
-          { name: 'action', label: 'Action', field: 'action',
+          { name: 'date', label: 'Subscribe Date', field: 'date',
             align: 'left', sortable: true },
         ],
       }
@@ -75,6 +77,12 @@
           .catch(err=> {
             console.log(err)
           })
+      }
+    },
+    filters : {
+      getDate (value) {
+        let date = moment(value.seconds*1000).format("MMMM Do YYYY");
+        return date
       }
     }
   }

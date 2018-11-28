@@ -56,7 +56,6 @@
     data () {
       return {
         checked: [],
-        posts: [{data: "dawdawdaw"}],
         pagination: {
           sortBy: null, // String, column "name" property value
           descending: false,
@@ -75,9 +74,9 @@
           { name: 'published_date', label: 'Published Date', field: 'published_date',
             align: 'left', sortable: true },
           { name: 'published', label: 'Published', field: 'published',
-            align: 'left', sortable: true },
+            align: 'left' },
           { name: 'edit', label: 'Edit', field: 'edit',
-            align: 'left', sortable: true },
+            align: 'left' },
         ],
         model: ''
       }
@@ -101,7 +100,8 @@
       deleteRow(row) {
         console.log(row)
         this.deletingPermanent(row)
-      }
+      },
+
     },
     mounted () {
       this.$store.dispatch('fetchingBlogs')
