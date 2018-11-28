@@ -29,7 +29,7 @@
 <script>
   import axios from 'axios'
   // import {mapState} from 'vuex'
-  // import swal from 'sweetalert'
+  import {swal} from '../config'
   // import {api} from '../config'
   export default {
     data () {
@@ -45,6 +45,7 @@
     },
     methods: {
       login () {
+        let self = this
         // this.$router.push('/')
         let url = 'https://us-central1-pintu-landing-pages.cloudfunctions.net/login'
         axios.post(url,{
@@ -52,9 +53,21 @@
           password: this.password
         })
           .then(({data})=> {
-            console.log(data)
-            localStorage.setItem('token', data.token)
-            this.$router.push("/")
+              if (data.data) {
+                console.log(data)
+                localStorage.setItem('token', data.token)
+                this.$router.push("/")
+                self.$q.notify({
+                  message: "Welcome " + data.data.username,
+                  timeout: 3000,
+                  type: 'positive',
+                  color: 'positive',
+                })
+              }
+              else {
+                console.log('err')
+                swal('Username / Password salah')
+              }
           })
           .catch(err=> {
             console.log(err)

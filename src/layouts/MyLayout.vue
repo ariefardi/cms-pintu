@@ -38,7 +38,7 @@
           <q-item-main label="Home" sublabel="Home Page" />
         </q-item>
         <q-item to="/blog">
-          <q-item-side  />
+          <q-item-side icon="dvr"  />
           <q-item-main label="Post" sublabel="Blog" />
         </q-item>
         <q-item to="/subscriber">
@@ -63,7 +63,7 @@
 
 <script>
 import { openURL } from 'quasar'
-
+import {swal} from '../config'
 export default {
   name: 'MyLayout',
   data () {
@@ -74,9 +74,19 @@ export default {
   methods: {
     openURL,
     logout () {
-      console.log('logout')
-      localStorage.clear()
-      this.$router.push('/auth')
+      swal({
+        title: "Are you sure?",
+        text: "Once logout, you have to login to see the content!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+        .then((willLogout)=> {
+          if (willLogout) {
+            localStorage.clear()
+            this.$router.push('/auth')
+          }
+        })
     }
   },
   created () {
