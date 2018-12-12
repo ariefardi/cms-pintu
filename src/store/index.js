@@ -3,9 +3,8 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import swal from 'sweetalert'
 import router from '../router/index'
-import {DB, token} from "../config";
+import {DB} from "../config";
 import { Notify } from 'quasar'
-
 Vue.use(Vuex)
 
 /*
@@ -57,7 +56,6 @@ export default new Vuex.Store({
             obj.id = doc.id
             temp.push(obj)
           })
-          console.log('ini fetching', temp)
           commit('setAdmins', temp)
         })
         .catch(err=> {
@@ -120,7 +118,6 @@ export default new Vuex.Store({
 
 
     fetchingBlogs({commit}) {
-      let self = this
       DB.collection("blogs")
         .get()
         .then(function(querySnapshot) {
@@ -131,7 +128,6 @@ export default new Vuex.Store({
             obj.id = doc.id
               let tempAuthor = obj.author.split('/')
               tempAuthor = tempAuthor[2]
-              console.log(tempAuthor)
               DB.collection('admin').doc(tempAuthor).get()
                 .then((authorRef)=> {
                   obj.author = authorRef.data().username
@@ -146,7 +142,7 @@ export default new Vuex.Store({
     },
 
     addingBlogs({commit}, payload) {
-      let self = this
+      let token = localStorage.getItem('token')
       DB.collection('blogs')
         .add({
         author: `/admin/${token}`,
@@ -163,7 +159,7 @@ export default new Vuex.Store({
         .then(function(docRef) {
           swal("Berhasil menambahkan postingan")
             .then(()=> {
-              router.push('/blog')
+              router.push('/')
             })
         })
         .catch(function(error) {

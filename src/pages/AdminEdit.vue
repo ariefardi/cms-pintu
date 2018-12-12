@@ -48,6 +48,7 @@
     methods: {
       register () {
         let id = this.$route.params.id
+        console.log('ini id',id)
         let self = this
         DB.collection("admin")
           .doc(id)
@@ -57,7 +58,6 @@
             created_at: new Date()
           })
           .then(function(docRef) {
-            console.log("Document written with ID: ", docRef.id);
             self.$router.push('/admin')
           })
           .catch(function(error) {
@@ -71,6 +71,7 @@
             .get()
             .then(snap=> {
               let temp = snap.data()
+              console.log('ini temp', temp)
               this.username = temp.username
             })
             .catch(err=> {

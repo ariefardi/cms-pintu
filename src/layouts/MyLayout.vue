@@ -37,9 +37,9 @@
           <q-item-side icon="home" />
           <q-item-main label="Home" sublabel="Home Page" />
         </q-item>
-        <q-item>
+        <q-item v-if="roleStatus" to="/admin">
           <q-item-side icon="people" />
-          <q-item-main label="Admin (Soon)" sublabel="List Admin" />
+          <q-item-main label="Admin" sublabel="List Admin" />
         </q-item>
         <q-item to="/blog">
           <q-item-side icon="dvr"  />
@@ -91,6 +91,15 @@ export default {
             this.$router.push('/auth')
           }
         })
+    },
+  },
+  computed: {
+    roleStatus () {
+      let role = localStorage.getItem('role')
+      if (role==='super_admin') {
+        return true
+      }
+      return false
     }
   },
   created () {

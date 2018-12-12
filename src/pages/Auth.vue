@@ -10,17 +10,17 @@
           icon="account_circle"
           helper="input your username"
         >
-          <q-input v-model="username" float-label="Username" />
+          <q-input v-model="username" float-label="Username" @keyup.enter="login" />
         </q-field>
         <q-field
           icon="lock"
           helper="input your password"
         >
-          <q-input type="password" v-model="password" float-label="Password" />
+          <q-input type="password" v-model="password" float-label="Password" @keyup.enter="login" />
         </q-field>
       </q-card-main>
       <q-card-actions align='end'>
-        <q-btn @click="login" flat label="Login"  />
+        <q-btn  @click="login" flat label="Login"  />
       </q-card-actions>
     </q-card>
   </div>
@@ -56,6 +56,7 @@
               if (data.data) {
                 console.log(data)
                 localStorage.setItem('token', data.token)
+                localStorage.setItem('role', data.data.role)
                 this.$router.push("/")
                 self.$q.notify({
                   message: "Welcome " + data.data.username,

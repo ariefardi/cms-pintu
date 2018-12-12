@@ -1,8 +1,7 @@
 const firebase = require('firebase')
-const token = localStorage.getItem("token")
 const config = {
-  storageBucket: "pintu-landing-pages.appspot.com",
-  projectId: "pintu-landing-pages",
+  storageBucket: "pintu-web.appspot.com",
+  projectId: "pintu-web",
 };
 firebase.initializeApp(config);
 
@@ -11,6 +10,6 @@ const DB = firebase.firestore()
 DB.settings({
   timestampsInSnapshots: true
 });
-const link_storage = "https://console.firebase.google.com/u/1/project/pintu-landing-pages/storage/pintu-landing-pages.appspot.com/files/blogs_assets/"
+const link_storage = "https://console.firebase.google.com/u/1/project/pintu-web/storage/pintu-web.appspot.com/files/blogs_assets/"
 const swal = require('sweetalert')
-export {storage, DB, token, swal, link_storage}
+export {storage, DB, swal, link_storage}

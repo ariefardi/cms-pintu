@@ -36,11 +36,13 @@
         </q-field>
 
         <q-field v-if="!imageTop">
-          <input @change="onchangeUpload" type="file">
+          <input class="custom-file-input" @change="onchangeUpload" type="file">
           <q-btn @click="uploadImage" :loading="loading"
                  :percentage="percentage" size="lg" color="red" flat round icon="cloud_upload" >
             <q-tooltip>Upload</q-tooltip>
           </q-btn>
+          <br>
+          <label > Max File 1MB</label>
         </q-field>
         <q-field>
           <div style="width: 500px; max-width: 90vw;" >
@@ -66,7 +68,7 @@
 </template>
 
 <script>
-  import {storage, token, swal, link_storage} from '../config'
+  import {storage, swal, link_storage} from '../config'
   import Dialog from '../components/Dialog'
   import {mapActions, mapState} from 'vuex'
   export default {
@@ -89,9 +91,12 @@
     mounted () {
 
       var config = {};
-      config.placeholder = 'some value';
+      CKEDITOR.plugins.addExternal('lineheight', '/plugins/lineheight/plugin.js')
+      config.extraPlugins = 'lineheight';
       CKEDITOR.replace("editor_english" , config );
       CKEDITOR.replace("editor_indo" , config );
+
+      // console.log(CKEDITOR)
     },
 
     data () {
@@ -123,6 +128,7 @@
         this.$store.commit('setCustomDialog', true)
       },
       addBlog () {
+        let token = localStorage.getItem('token')
         this.content_english = CKEDITOR.instances.content_english.getData()
         this.content_indo = CKEDITOR.instances.content_indo.getData()
         let albumTitle = localStorage.getItem('albumTitle')
@@ -173,10 +179,12 @@
         }
       },
       deleteImage (image, index) {
+        let self = this
         let albumTitle = localStorage.getItem('albumTitle')
         storage.ref('blogs_assets/'+`${albumTitle}/`+image.name).delete()
           .then(()=> {
             console.log('berhasil delete')
+            self.imageTop = null
             this.images.splice(index,1)
           })
           .catch(err=> {
@@ -196,4 +204,5 @@
     width: 100%;
     height: auto;
   }
+
 </style>

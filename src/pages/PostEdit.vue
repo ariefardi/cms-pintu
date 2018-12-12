@@ -209,6 +209,8 @@
             let temp = snap.data()
             var config = {};
             config.placeholder = 'some value';
+            CKEDITOR.plugins.addExternal('lineheight', '/plugins/lineheight/plugin.js')
+            config.extraPlugins = 'lineheight';
             CKEDITOR.replace("editor_english" , config );
             CKEDITOR.replace("editor_indo" , config );
             CKEDITOR.instances.content_english.setData(temp.content_english)

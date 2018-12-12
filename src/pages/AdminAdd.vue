@@ -52,6 +52,7 @@
           .add({
             username: this.username,
             password: this.password,
+            role: "admin",
             created_at: new Date()
           })
           .then(function(docRef) {

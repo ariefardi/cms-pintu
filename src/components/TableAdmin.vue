@@ -63,11 +63,11 @@ import moment from 'moment'
         this.deleteAdmin(row)
       },
       toEdit (row) {
-        // this.$router.push('/admin-edit/'+row.id)
-        this.$q.notify({
-          message: "soon update coming!!",
-          position: 'top-right'
-        })
+        this.$router.push('/admin-edit/'+row.id)
+        // this.$q.notify({
+        //   message: "soon update coming!!",
+        //   position: 'top-right'
+        // })
       }
     },
     mounted () {
@@ -76,7 +76,8 @@ import moment from 'moment'
     filters : {
       getDate (value) {
         let date = moment(value.seconds*1000).format("MMMM Do YYYY");
-        return date
+        let time = moment(value.seconds*1000).format("h:mm:ss a")
+        return `${date} - ${time}`
       }
     }
   }

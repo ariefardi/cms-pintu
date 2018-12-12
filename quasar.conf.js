@@ -68,7 +68,8 @@ module.exports = function (ctx) {
         'QBtnToggle',
         'QOptionGroup',
         'QToggle',
-        'QDialog'
+        'QDialog',
+        'QCheckbox'
       ],
       directives: [
         'Ripple', 'Scroll'
