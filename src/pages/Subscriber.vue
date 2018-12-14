@@ -90,11 +90,10 @@
       },
       exportCsv () {
         let self = this
-        $('#test').click(function(event) {
-          event.preventDefault()
-          console.log(self.subs)
+        // $('#test').click(function(event) {
+        //   event.preventDefault()
+          console.log('ini apa')
           let temp = self.selected
-          console.log('ini temp',temp)
           var csv = 'Email\n';
           let sub = []
           // console.log(temp)
@@ -114,7 +113,7 @@
           document.body.appendChild(hiddenElement);
           hiddenElement.click();
           document.body.removeChild(hiddenElement);
-        });
+        // });
       },
       getSubs () {
         let self = this
@@ -130,7 +129,6 @@
               temp.push(obj)
             });
             self.subs = temp
-            console.log(self.subs)
 
           })
           .catch(err=> {

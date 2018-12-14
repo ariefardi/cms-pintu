@@ -29,7 +29,7 @@
 <script>
   import axios from 'axios'
   // import {mapState} from 'vuex'
-  import {swal} from '../config'
+  import {swal, link_functions} from '../config'
   // import {api} from '../config'
   export default {
     data () {
@@ -47,7 +47,7 @@
       login () {
         let self = this
         // this.$router.push('/')
-        let url = 'https://us-central1-pintu-landing-pages.cloudfunctions.net/login'
+        let url = link_functions
         axios.post(url,{
           username: this.username,
           password: this.password
